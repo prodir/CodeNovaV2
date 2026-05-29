@@ -419,23 +419,29 @@ body.is-loaded .word{
   font-size: .92rem;
 }
 
-.hero-proof strong{
-  color: var(--white);
-}
-
 .proof-avatars{
   display: flex;
+  align-items: center;
 }
 
-.proof-avatars span{
-  width: 32px;
-  height: 32px;
-  margin-right: -9px;
+.proof-avatars img{
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 2px solid var(--bg);
-  background:
-    radial-gradient(circle at 30% 25%, #fff, transparent 22%),
-    linear-gradient(135deg, var(--orange), #2f586e);
+
+  object-fit: contain;
+  padding: 5px;
+
+  background: rgba(255,255,255,.92);
+  border: 2px solid rgba(255,255,255,.18);
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+.proof-avatars img:not(:first-child){
+  margin-left: -10px;
 }
 
 /* ================= MOCKUPS ================= */
