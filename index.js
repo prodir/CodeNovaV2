@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initPortfolioStats();
   initPricingReveal();
   initFooterReveal();
+  initContactReveal();
+  initHideNavOnScroll();
 });
 
 function splitWords() {
@@ -199,7 +201,7 @@ function initPortfolioStats() {
           counter.dataset.animated = "true";
           animateCounter(counter);
         }
-
+        
         observer.unobserve(entry.target);
       });
     },
@@ -251,4 +253,74 @@ function initFooterReveal() {
   );
 
   elements.forEach((element) => observer.observe(element));
+}
+
+function initContactReveal() {
+  const elements = document.querySelectorAll(".contact-reveal");
+
+  if (!elements.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.18,
+      rootMargin: "0px 0px -8% 0px",
+    }
+  );
+
+  elements.forEach((element) => observer.observe(element));
+}
+
+function initHideNavOnScroll() {
+  const header = document.querySelector(".site-header");
+
+  if (!header) return;
+
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+  const minScrollToHide = 140;
+  const scrollDelta = 8;
+
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+
+    window.requestAnimationFrame(() => {
+      const currentScrollY = window.scrollY;
+      const difference = currentScrollY - lastScrollY;
+      const scrollingDown = difference > scrollDelta;
+      const scrollingUp = difference < -scrollDelta;
+
+      /* Siempre visible arriba de todo */
+      if (currentScrollY < 80) {
+        header.classList.remove("nav-hidden");
+      }
+
+      /* No ocultar si el menú mobile está abierto */
+      else if (document.body.classList.contains("nav-open")) {
+        header.classList.remove("nav-hidden");
+      }
+
+      /* Bajando: ocultar */
+      else if (scrollingDown && currentScrollY > minScrollToHide) {
+        header.classList.add("nav-hidden");
+      }
+
+      /* Subiendo: mostrar */
+      else if (scrollingUp) {
+        header.classList.remove("nav-hidden");
+      }
+
+      lastScrollY = Math.max(currentScrollY, 0);
+      ticking = false;
+    });
+
+    ticking = true;
+  });
 }

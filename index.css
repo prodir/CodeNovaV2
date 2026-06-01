@@ -87,6 +87,27 @@ img{
   border-radius: 999px;
   backdrop-filter: blur(18px);
   box-shadow: 0 20px 60px rgba(0,0,0,.35);
+   --nav-y: 0;
+  --nav-blur: 0px;
+
+  transform: translateX(-50%) translateY(var(--nav-y));
+  opacity: 1;
+  filter: blur(var(--nav-blur));
+
+  transition:
+    transform .42s cubic-bezier(.22,.61,.36,1),
+    opacity .32s ease,
+    filter .32s ease;
+
+  will-change: transform, opacity, filter;
+}
+
+.site-header.nav-hidden{
+  --nav-y: -145%;
+  --nav-blur: 10px;
+
+  opacity: 0;
+  pointer-events: none;
 }
 
 .brand{
@@ -2073,8 +2094,9 @@ body.is-loaded .reveal-mockup{
 
 .pricing-section{
   position: relative;
-  padding: 0 0 5rem;
+  padding: 0 0 7rem;
   overflow: hidden;
+  background: transparent;
 }
 
 .pricing-container{
@@ -2111,7 +2133,7 @@ body.is-loaded .reveal-mockup{
 }
 
 .pricing-heading h2{
-  font-size: clamp(3rem, 7vw, 7rem);
+  font-size: clamp(4rem, 6vw, 6rem);
   line-height: .95;
   letter-spacing: -.05em;
   margin-bottom: 1rem;
@@ -2122,12 +2144,30 @@ body.is-loaded .reveal-mockup{
   background: linear-gradient(90deg, var(--orange), var(--orange-light), var(--gold));
   -webkit-background-clip: text;
   background-clip: text;
+  font-family: "Aldrich", sans-serif;
   color: transparent;
 }
 
+.pricing-heading h2 span::after{
+  content: "";
+  display: inline-block;
+  width: .08em;
+  height: .82em;
+  margin-left: .12em;
+  translate: 0 .08em;
+  border-radius: 999px;
+  background: var(--orange-light);
+  box-shadow: 0 0 16px rgba(255,106,0,.55);
+  animation: typingCursorBlink .85s steps(1) infinite;
+}
+
 .pricing-heading p{
+  max-width: 760px;
   margin-left: 0;
   margin-right: 0;
+  color: rgba(250,250,250,.72);
+  line-height: 1.7;
+  font-size: 1.02rem;
 }
 
 .pricing-bg-word{
@@ -2146,17 +2186,24 @@ body.is-loaded .reveal-mockup{
   white-space: nowrap;
 }
 
+/* ===============================
+   PRICING GRID DESKTOP GRANDE
+   =============================== */
+
 .pricing-grid{
   position: relative;
   z-index: 3;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.3rem;
-  align-items: stretch;
-  margin-top: 2.8rem;
+  grid-template-columns: .92fr 1.04fr .92fr;
+  gap: 0;
+  align-items: start;
+  margin-top: 3.1rem;
 }
 
 .price-card{
+  --card-rest-transform: translateY(0) scale(1);
+  --card-hover-transform: translateY(-10px) scale(1);
+
   position: relative;
   overflow: hidden;
   border-radius: 30px;
@@ -2175,7 +2222,30 @@ body.is-loaded .reveal-mockup{
   transition:
     transform .28s ease,
     border-color .28s ease,
-    box-shadow .28s ease;
+    box-shadow .28s ease,
+    opacity .8s ease,
+    filter .8s ease;
+}
+
+/* Card izquierda: más chica y debajo */
+.pricing-grid .price-card:nth-child(1){
+  --card-rest-transform: translateX(48px) translateY(42px) scale(.91);
+  --card-hover-transform: translateX(48px) translateY(30px) scale(.925);
+  z-index: 1;
+}
+
+/* Card central: protagonista */
+.pricing-grid .price-card:nth-child(2){
+  --card-rest-transform: translateY(0) scale(1);
+  --card-hover-transform: translateY(-14px) scale(1.01);
+  z-index: 4;
+}
+
+/* Card derecha: más chica y debajo */
+.pricing-grid .price-card:nth-child(3){
+  --card-rest-transform: translateX(-48px) translateY(42px) scale(.91);
+  --card-hover-transform: translateX(-48px) translateY(30px) scale(.925);
+  z-index: 1;
 }
 
 .price-card::before{
@@ -2187,10 +2257,10 @@ body.is-loaded .reveal-mockup{
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255,106,0,.16), transparent 70%);
   pointer-events: none;
+   opacity: .55;
 }
 
 .price-card:hover{
-  transform: translateY(-10px);
   border-color: rgba(255,106,0,.34);
   box-shadow:
     0 36px 90px rgba(0,0,0,.42),
@@ -2198,17 +2268,27 @@ body.is-loaded .reveal-mockup{
     inset 0 1px 0 rgba(255,255,255,.08);
 }
 
-.price-card-featured{
-  transform: translateY(-14px);
-  border-color: rgba(255,106,0,.35);
-  box-shadow:
-    0 34px 95px rgba(0,0,0,.44),
-    0 0 34px rgba(255,106,0,.12),
-    inset 0 1px 0 rgba(255,255,255,.08);
+.pricing-grid .price-card.pricing-reveal.is-visible:hover{
+  transform: var(--card-hover-transform);
 }
 
-.price-card-featured:hover{
-  transform: translateY(-20px);
+.price-card-featured{
+    background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.018)
+    ),
+    rgba(14,15,22,.34);
+
+  border-color: rgba(255,106,0,.34);
+
+  box-shadow:
+    0 34px 95px rgba(0,0,0,.38),
+    0 0 34px rgba(255,106,0,.10),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  backdrop-filter: blur(11px);
 }
 
 .price-badge{
@@ -2317,7 +2397,7 @@ body.is-loaded .reveal-mockup{
 
 .pricing-note{
   max-width: 850px;
-  margin: 2rem auto 0;
+  margin: 4.8rem auto 0;
   text-align: center;
   color: rgba(250,250,250,.62);
   line-height: 1.7;
@@ -2334,24 +2414,26 @@ body.is-loaded .reveal-mockup{
   transition:
     opacity .8s ease,
     transform .8s cubic-bezier(.22,.61,.36,1),
-    filter .8s ease;
+    filter .8s ease,
+    border-color .28s ease,
+    box-shadow .28s ease;
 }
 
 .pricing-reveal.is-visible{
   opacity: 1;
-  transform: translateY(0);
+  transform: var(--card-rest-transform, translateY(0));
   filter: blur(0);
 }
 
-.pricing-grid .price-card:nth-child(1){
+.pricing-grid .price-card:nth-child(1).pricing-reveal{
   transition-delay: .06s;
 }
 
-.pricing-grid .price-card:nth-child(2){
+.pricing-grid .price-card:nth-child(2).pricing-reveal{
   transition-delay: .16s;
 }
 
-.pricing-grid .price-card:nth-child(3){
+.pricing-grid .price-card:nth-child(3).pricing-reveal{
   transition-delay: .26s;
 }
 
@@ -2430,6 +2512,424 @@ body.is-loaded .reveal-mockup{
       0 0 0 0 rgba(37, 211, 102, 0);
   }
 }
+
+/* ===============================
+   CONTACTO + HUBSPOT FORM
+   =============================== */
+
+.contact-section{
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 5vw 7rem;
+  color: var(--white);
+  background: transparent;
+}
+
+.contact-section::before{
+  content: "";
+  position: absolute;
+  right: -240px;
+  top: 10%;
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,106,0,.18), transparent 68%);
+  filter: blur(42px);
+  pointer-events: none;
+}
+
+.contact-container{
+  width: min(1280px, 92%);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+}
+
+.contact-copy{
+  max-width: 560px;
+}
+
+.contact-kicker{
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 1rem;
+
+  color: rgba(250,250,250,.7);
+  font-size: .88rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.contact-kicker::before{
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
+  box-shadow: 0 0 16px rgba(255,106,0,.5);
+}
+
+.contact-copy h2{
+  font-size: clamp(2.8rem, 6vw, 6rem);
+  line-height: .95;
+  letter-spacing: -.06em;
+  margin-bottom: 1rem;
+}
+
+.contact-copy h2 span{
+  font-family: "Aldrich", sans-serif;
+  background: linear-gradient(90deg, var(--orange), var(--orange-light), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.contact-copy h2 span{
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(90deg, var(--orange), var(--orange-light), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.contact-copy h2 span::after{
+  content: "";
+  display: inline-block;
+  width: .08em;
+  height: .82em;
+  margin-left: .12em;
+  translate: 0 .08em;
+  border-radius: 999px;
+  background: var(--orange-light);
+  box-shadow: 0 0 16px rgba(255,106,0,.55);
+  animation: typingCursorBlink .85s steps(1) infinite;
+}
+
+.contact-copy p{
+  color: rgba(250,250,250,.68);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.contact-benefits{
+  display: grid;
+  gap: .8rem;
+  margin-top: 1.6rem;
+}
+
+.contact-benefits p{
+  width: fit-content;
+  padding: .75rem 1rem;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(250,250,250,.82);
+
+  font-size: .92rem;
+  font-weight: 700;
+}
+
+/* CARD DEL FORM */
+
+.contact-form-card{
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.095), rgba(255,255,255,.025)),
+    rgba(18,19,26,.78);
+
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  backdrop-filter: blur(16px);
+}
+
+.contact-form-card::before{
+  content: "";
+  position: absolute;
+  left: -120px;
+  top: -120px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,106,0,.22), transparent 70%);
+  pointer-events: none;
+}
+
+.contact-form-card > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* ===============================
+   ESTILOS HUBSPOT
+   =============================== */
+
+.contact-form-card .hs-form{
+  width: 100%;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.contact-form-card .hs-form fieldset{
+  max-width: 100% !important;
+}
+
+.contact-form-card .hs-form-field{
+  margin-bottom: 1rem;
+}
+
+.contact-form-card .hs-form label{
+  display: block;
+  margin-bottom: .45rem;
+
+  color: rgba(250,250,250,.82);
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.contact-form-card .hs-form .hs-input{
+  width: 100% !important;
+  min-height: 52px;
+  padding: 0 1rem;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.13);
+
+  background: rgba(255,255,255,.07);
+  color: var(--white);
+
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: .95rem;
+
+  outline: none;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.contact-form-card .hs-form textarea.hs-input{
+  min-height: 135px;
+  padding: 1rem;
+  resize: vertical;
+}
+
+.contact-form-card .hs-form .hs-input::placeholder{
+  color: rgba(250,250,250,.38);
+}
+
+.contact-form-card .hs-form .hs-input:focus{
+  border-color: rgba(255,106,0,.72);
+  background: rgba(255,255,255,.095);
+  box-shadow:
+    0 0 0 4px rgba(255,106,0,.12),
+    0 0 22px rgba(255,106,0,.12);
+}
+
+/* Selects / teléfono */
+
+.contact-form-card .hs-form select.hs-input{
+  cursor: pointer;
+  color: var(--white);
+}
+
+.contact-form-card .hs-form option{
+  color: #111;
+}
+
+/* Checkboxes privacidad */
+
+.contact-form-card .hs-form .inputs-list{
+  list-style: none;
+  padding: 0;
+  margin: .5rem 0 0;
+}
+
+.contact-form-card .hs-form .inputs-list li{
+  margin: 0;
+}
+
+.contact-form-card .hs-form input[type="checkbox"]{
+  width: 16px;
+  height: 16px;
+  margin-right: .5rem;
+  accent-color: var(--orange);
+}
+
+.contact-form-card .hs-form .legal-consent-container,
+.contact-form-card .hs-form .hs-richtext{
+  color: rgba(250,250,250,.62);
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+.contact-form-card .hs-form .legal-consent-container a,
+.contact-form-card .hs-form .hs-richtext a{
+  color: var(--orange-light);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Errores */
+
+.contact-form-card .hs-error-msgs{
+  list-style: none;
+  padding: 0;
+  margin: .35rem 0 0;
+}
+
+.contact-form-card .hs-error-msgs label{
+  color: #ff8b8b;
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+/* Botón */
+
+.contact-form-card .hs_submit{
+  margin-top: 1.4rem;
+}
+
+.contact-form-card .hs_submit .actions{
+  margin: 0;
+  padding: 0;
+}
+
+.contact-form-card .hs-button{
+  width: 100%;
+  min-height: 56px;
+  border: 0;
+  border-radius: 16px;
+
+  background: linear-gradient(90deg, var(--orange), var(--orange-light));
+  color: #111;
+
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: .98rem;
+  font-weight: 900;
+
+  cursor: pointer;
+  box-shadow: 0 18px 36px rgba(255,106,0,.25);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease;
+}
+
+.contact-form-card .hs-button:hover{
+  transform: translateY(-3px);
+  filter: brightness(1.04);
+  box-shadow: 0 22px 46px rgba(255,106,0,.34);
+}
+
+/* Mensaje enviado */
+
+.contact-form-card .submitted-message{
+  padding: 1.2rem;
+  border-radius: 20px;
+
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+
+  color: rgba(250,250,250,.82);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.contact-reveal{
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(48px);
+  transition:
+    opacity .85s ease,
+    transform .85s cubic-bezier(.22,.61,.36,1),
+    filter .85s ease;
+}
+
+.contact-reveal.is-visible{
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* Texto entra primero */
+.contact-copy.contact-reveal{
+  transition-delay: .08s;
+}
+
+/* Formulario entra después */
+.contact-form-card.contact-reveal{
+  transition-delay: .24s;
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (max-width: 920px){
+  .contact-section{
+    padding: 4rem 5vw 5.5rem;
+  }
+
+  .contact-container{
+    grid-template-columns: 1fr;
+  }
+
+  .contact-copy{
+    max-width: 100%;
+  }
+
+  .contact-form-card{
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 520px){
+  .contact-container{
+    width: min(100%, 100%);
+  }
+
+  .contact-copy h2{
+    font-size: clamp(2.55rem, 15vw, 4rem);
+  }
+
+  .contact-benefits p{
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .contact-form-card{
+    padding: 1rem;
+  }
+
+  .contact-form-card .hs-form .hs-input{
+    min-height: 50px;
+    border-radius: 13px;
+  }
+
+  .contact-form-card .hs-button{
+    min-height: 54px;
+    border-radius: 14px;
+  }
+}
+
+
 
 /* ===============================
    FOOTER CODENOVA
@@ -3033,9 +3533,13 @@ body.nav-open .nav-toggle span:nth-child(3){
     font-size: .88rem;
     line-height: 1.5;
   }
+/* ===============================
+   RESPONSIVE PRICING - MAX 1570px
+   =============================== */
+
 
   .pricing-section{
-    padding: 0 0 4.5rem;
+    padding: 0 0 6rem;
   }
 
   .pricing-container{
@@ -3050,15 +3554,34 @@ body.nav-open .nav-toggle span:nth-child(3){
     font-size: clamp(3rem, 7vw, 6.5rem);
   }
 
+  .pricing-heading p{
+    font-size: .98rem;
+  }
+
   .pricing-bg-word{
     top: 7rem;
     font-size: clamp(6rem, 16vw, 13rem);
   }
 
   .pricing-grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 2.5rem;
+    grid-template-columns: .93fr 1.04fr .93fr;
+    gap: 0;
+    margin-top: 2.6rem;
+  }
+
+  .pricing-grid .price-card:nth-child(1){
+    --card-rest-transform: translateX(30px) translateY(32px) scale(.93);
+    --card-hover-transform: translateX(30px) translateY(22px) scale(.94);
+  }
+
+  .pricing-grid .price-card:nth-child(2){
+    --card-rest-transform: translateY(0) scale(1);
+    --card-hover-transform: translateY(-10px) scale(1.01);
+  }
+
+  .pricing-grid .price-card:nth-child(3){
+    --card-rest-transform: translateX(-30px) translateY(32px) scale(.93);
+    --card-hover-transform: translateX(-30px) translateY(22px) scale(.94);
   }
 
   .price-card{
@@ -3095,6 +3618,11 @@ body.nav-open .nav-toggle span:nth-child(3){
   .price-card small{
     font-size: .76rem;
   }
+
+  .pricing-note{
+    margin-top: 4rem;
+  }
+
 
    .footer-container{
     width: min(1180px, 100%);
@@ -3455,8 +3983,8 @@ body.nav-open .nav-toggle span:nth-child(3){
     height: 52px;
     border-radius: 15px;
   }
-   .pricing-section{
-    padding: 5rem 0 4rem;
+    .pricing-section{
+    padding: 0 0 4rem;
   }
 
   .pricing-container{
@@ -3492,14 +4020,12 @@ body.nav-open .nav-toggle span:nth-child(3){
     gap: 1.25rem;
   }
 
-  .price-card,
-  .price-card-featured{
-    transform: none;
-  }
-
-  .price-card:hover,
-  .price-card-featured:hover{
-    transform: translateY(-8px);
+  .pricing-grid .price-card:nth-child(1),
+  .pricing-grid .price-card:nth-child(2),
+  .pricing-grid .price-card:nth-child(3){
+    --card-rest-transform: translateY(0) scale(1);
+    --card-hover-transform: translateY(-8px) scale(1);
+    z-index: auto;
   }
 
   .price-card{
@@ -3530,6 +4056,15 @@ body.nav-open .nav-toggle span:nth-child(3){
 
   .price-btn{
     min-height: 54px;
+  }
+
+  .pricing-note{
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+   .contact-copy h2{
+    font-size: clamp(2.55rem, 15vw, 4rem);
   }
 
     .site-footer{
@@ -3879,8 +4414,8 @@ body.nav-open .nav-toggle span:nth-child(3){
     max-width: 92%;
   }
 
-   .pricing-section{
-    padding: 4.5rem 0 3.5rem;
+    .pricing-section{
+    padding: 0 0 3.5rem;
   }
 
   .pricing-container{
