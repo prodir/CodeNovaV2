@@ -2243,8 +2243,8 @@ body.is-loaded .reveal-mockup{
 
 /* Card derecha: más chica y debajo */
 .pricing-grid .price-card:nth-child(3){
-  --card-rest-transform: translateX(-48px) translateY(42px) scale(.91);
-  --card-hover-transform: translateX(-48px) translateY(30px) scale(.925);
+  --card-rest-transform: translateX(-32px) translateY(42px) scale(.91);
+  --card-hover-transform: translateX(-32px) translateY(30px) scale(.925);
   z-index: 1;
 }
 
@@ -3250,7 +3250,7 @@ body.is-loaded .reveal-mockup{
 
 
 
-@media (max-width: 1570px){
+@media (max-width: 1420px){
     .site-header{
     height: 64px;
     top: 14px;
@@ -3580,8 +3580,8 @@ body.nav-open .nav-toggle span:nth-child(3){
   }
 
   .pricing-grid .price-card:nth-child(3){
-    --card-rest-transform: translateX(-30px) translateY(32px) scale(.93);
-    --card-hover-transform: translateX(-30px) translateY(22px) scale(.94);
+    --card-rest-transform: translateX(-20px) translateY(32px) scale(.93);
+    --card-hover-transform: translateX(-20px) translateY(22px) scale(.94);
   }
 
   .price-card{
