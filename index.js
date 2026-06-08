@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initPortfolioStats();
   initPricingReveal();
   initFooterReveal();
-  initContactReveal();
   initHideNavOnScroll();
 });
 
@@ -255,28 +254,6 @@ function initFooterReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
-function initContactReveal() {
-  const elements = document.querySelectorAll(".contact-reveal");
-
-  if (!elements.length) return;
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    },
-    {
-      threshold: 0.18,
-      rootMargin: "0px 0px -8% 0px",
-    }
-  );
-
-  elements.forEach((element) => observer.observe(element));
-}
 
 function initHideNavOnScroll() {
   const header = document.querySelector(".site-header");
